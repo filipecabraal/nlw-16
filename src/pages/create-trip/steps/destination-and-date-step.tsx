@@ -5,15 +5,23 @@ import { DateRange, DayPicker } from "react-day-picker";
 import { format } from 'date-fns'
 import "react-day-picker/dist/style.css";
 
-interface DestinationAndDateStep {
+interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean
-  handleGuestsInputOpen: () => void
+  handleGuestsInputOpen: () => void,
+  setDestination: (destination: string) => void,
+  eventStartAndEndDates: DateRange | undefined,
+  setEventStartAndEndDates: (dates: DateRange | undefined) => void
 }
 
-export function DestinationAndDateStep({ isGuestsInputOpen, handleGuestsInputOpen }: DestinationAndDateStep) {
+export function DestinationAndDateStep({
+  isGuestsInputOpen,
+  handleGuestsInputOpen,
+  setDestination,
+  eventStartAndEndDates,
+  setEventStartAndEndDates
+}: DestinationAndDateStepProps) {
 
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
-  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<DateRange | undefined>()
 
   function handleDatePicker() {
     isDatePickerOpen ? setIsDatePickerOpen(false) : setIsDatePickerOpen(true)
@@ -29,7 +37,9 @@ export function DestinationAndDateStep({ isGuestsInputOpen, handleGuestsInputOpe
         <input
           disabled={isGuestsInputOpen}
           type="text" placeholder="Para onde você vai?"
-          className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1" />
+          className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+          onChange={event => setDestination(event.target.value)}
+        />
       </div>
 
       <button onClick={handleDatePicker} disabled={isGuestsInputOpen} className='flex items-center gap-2 text-left w-[240px]'>
